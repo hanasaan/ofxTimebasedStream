@@ -155,7 +155,7 @@ protected:
 
 	operator bool()
 	{
-		return ifs;
+		return static_cast<bool>(ifs);
 	}
 };
 
