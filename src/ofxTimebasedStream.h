@@ -192,6 +192,7 @@ public:
 		rate = 1;
 		playing = true;
 		frameNew = false;
+        has_next = true;
 	}
 
 	void stop()
@@ -246,6 +247,7 @@ public:
 					else
 					{
 						playing = false;
+                        has_next = false;
 						rewind();
 					}
 					
@@ -253,6 +255,9 @@ public:
 					
 					break;
 				}
+                else {
+                    has_next = true;
+                }
 			}
 			
 			if (!data.empty())
@@ -291,6 +296,7 @@ protected:
 
 	virtual void setup() = 0;
 	virtual void onFrameNew(const string &data) = 0;
+    bool has_next;
 
 private:
 
@@ -300,7 +306,6 @@ private:
 	bool loop;
 	float rate;
 	bool needUpdate;
-
 };
 
 }
