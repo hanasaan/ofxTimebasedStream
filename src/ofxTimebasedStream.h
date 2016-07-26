@@ -8,9 +8,9 @@ namespace ofxTimebasedStream
 struct Packet
 {
 	float timestamp;
-	size_t length;
+	uint32_t length;
 
-	inline const size_t getHeaderOffset() const { return sizeof(float) + sizeof(size_t); }
+	inline const uint32_t getHeaderOffset() const { return sizeof(float) + sizeof(uint32_t); }
 };
 
 class Writer
@@ -51,14 +51,14 @@ public:
 		write(t, data.data(), data.size());
 	}
 
-	void write(float t, const void *data, size_t length)
+	void write(float t, const void *data, uint32_t length)
 	{
 		Packet p;
 		p.timestamp = t;
 		p.length = length;
 
 		ofs.write((char*)&p.timestamp, sizeof(float));
-		ofs.write((char*)&length, sizeof(size_t));
+		ofs.write((char*)&length, sizeof(uint32_t));
 		ofs.write((char*)data, length);
 
 		offset += p.getHeaderOffset() + length;
@@ -122,7 +122,7 @@ public:
 		offset = 0;
 
 		ifs.read((char*)&p.timestamp, sizeof(float));
-		ifs.read((char*)&p.length, sizeof(size_t));
+		ifs.read((char*)&p.length, sizeof(uint32_t));
 
 		ifs.seekg(0, std::ios::beg);
 	}
@@ -137,7 +137,7 @@ public:
 		if (*this == false || isEof()) return false;
 
 		ifs.read((char*)&p.timestamp, sizeof(float));
-		ifs.read((char*)&p.length, sizeof(size_t));
+		ifs.read((char*)&p.length, sizeof(uint32_t));
 
 		data.resize(p.length);
 		ifs.read((char*)data.data(), p.length);
